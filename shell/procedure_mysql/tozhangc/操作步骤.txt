@@ -1,0 +1,46 @@
+
+1,从平台导出sql 到本机
+
+1018_00_14.sql
+
+2,修改导出文件
+ sed -i  's/INTO ``/INTO `fpmx1018`/g'  1018_00_14.sql
+ 
+ 
+
+3,按照日期修改table.sql  
+#新建表
+mysql -uroot  -ppassword < table.sql
+
+
+
+4,导入平台导出的修改后的数据
+
+
+
+mysql -uroot --ppassword  voh  < 1018_00_14.sql
+
+
+ 
+5,登陆数据库修改数据
+ 
+
+update fpmx1018 set  PROVINCE_CODE='NULL' where ( PROVINCE_CODE='' or PROVINCE_CODE is null ) ;
+update fpmx1018 set  CITY_CODE='NULL' where ( CITY_CODE='' or CITY_CODE is null ) ;
+update fpmx1018 set  KPD='NULL' where ( KPD='' or KPD is null ) ;
+update fpmx1018 set  KJLY='NULL' where ( KJLY='' or KJLY is null ) ;
+update fpmx1018 set  XZQD='NULL' where ( XZQD='' or XZQD is null ) ;
+ 
+
+6, 修改sql文件,目的是让sql文件中的表名称和新建的表名称一致
+#注意1016 这个要看原来下面几个sql文件中的是什么
+sed -i  's/1016/1018/g'    tojituan.sql tozhangc.sql
+
+7,
+sh main.sh
+
+
+
+####
+ps :
+ create database voh charset=utf8;
